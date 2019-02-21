@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  faas-gateway:
+      build:
+        context: ./gateway
+      ports:
+        - "8080:8080"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./gateway:/go/src/github.com/tasbouz/faas/gateway
+
+  fibonacci:
+    build:
+      context: ./fibonacci
+    labels:
+      - "faas.name=fibonacci"
+      - "faas.port=8080"
+    volumes:
+      - ./fibonacci:/go/src/github.com/tasbouz/faas/fibonacci
+
+  prime:
+    build:
+      context: ./prime
+    labels:
+      - "faas.name=prime"
+      - "faas.port=8080"
+    volumes:
+      - ./prime:/go/src/github.com/tasbouz/faas/prime
